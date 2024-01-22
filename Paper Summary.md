@@ -23,14 +23,14 @@ E_{0): complexes produced by the cytotoxic process
 
 #### Reaction Equations:
 
-1: $C \xrightarrow{k'_1(t)} 2C$
+$C \xrightarrow{k'_1(t)} 2C$  
 Represents the proliferation of cancerous cells at time `t`.
 
-- **Reaction (2)**: `C + E_0 \xrightarrow{k_2} E \xrightarrow{k_3} E_0 + D`
-The first part is a cytotoxic process where an effector cell `E_0` binds to a cancerous cell `C`, becoming an activated effector cell `E`. The second part denotes the dissolution of the effector cell complex, resulting in the reversion of the effector cell to its original state `E_0` and a dead cell `D`. This sequence implies that the effector cell attacks the cancerous cell, which eventually dies.
+$C + E_0 \xrightarrow{k_2} E \xrightarrow{k_3} E_0 + D$  
+The first part is a cytotoxic process where an effector cell `E_0` binds to a cancerous cell `C`, becoming an activated effector cell `E`.   The second part denotes the dissolution of the effector cell complex, resulting in the reversion of the effector cell to its original state `E_0` and a dead cell `D`. This sequence implies that the effector cell attacks the cancerous cell, which eventually dies.
 
-- **Reaction (3)**: `D \xrightarrow{k_4} \text{normal}`
-Represents revertion of a dead cell to a normal cell.
+$D \xrightarrow{k_4} \text{normal}$  
+Represents revertion of a dead cell to a normal cell.  
 
  
 | Parameter | Value (day^-1) | Description                                                                                      |
