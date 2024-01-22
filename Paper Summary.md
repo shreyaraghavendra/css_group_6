@@ -1,13 +1,13 @@
 ### Introduction
 
-* Cancerous tumor dynamics include their growth, propagation, and treatment
-* Cell division states: G1, G2, S, M. Each have different durations. Most cancerous cells in G1-phase -> the mean time is important.
-* CA models can demonstrate how global (macroscopic) behavior of cell assemblies as tumors are affected by changes in local (microscopic) properties of cell interaction.
-* This model focuses on these macroscopic properties:
-(a) Metastasis - the ability to migrate to other parts of the body through the lymphatic system or the bloodstream, causing secondary tumors in other organs.
-(b) Cytotoxic effect of the immune system
-(c) Mechanical pressure inside the tumor
-* Time delay in the model represents the time it takes for a cancer cell to undergo mitosis. This enables metastasis.
+* Cancerous tumor dynamics include their growth, propagation, and treatment  
+* Cell division states: G1, G2, S, M. Each have different durations. Most cancerous cells in G1-phase -> the mean time is important.  
+* CA models can demonstrate how global (macroscopic) behavior of cell assemblies as tumors are affected by changes in local (microscopic) properties of cell interaction.  
+* This model focuses on these macroscopic properties:  
+(a) Metastasis - the ability to migrate to other parts of the body through the lymphatic system or the bloodstream, causing secondary tumors in other organs.  
+(b) Cytotoxic effect of the immune system  
+(c) Mechanical pressure inside the tumor  
+* Time delay in the model represents the time it takes for a cancer cell to undergo mitosis. This enables metastasis.  
 
 ### Continuous Model
 
@@ -15,15 +15,15 @@
 
 #### Types of cells modelled:
 
-N: normal cells
-C: cancerous (abnormal) cells
-D: dead cancerous cells
-E: effector (cytotoxic) cells (macrophages, etc) 
-E_{0): complexes produced by the cytotoxic process
+N: normal cells  
+C: cancerous (abnormal) cells  
+D: dead cancerous cells  
+E: effector (cytotoxic) cells (macrophages, etc)   
+E_{0): complexes produced by the cytotoxic process  
 
 #### Reaction Equations:
 
-- **Reaction (1)**: `C \xrightarrow{k'_1(t)} 2C`
+1: $C \xrightarrow{k'_1(t)} 2C$
 Represents the proliferation of cancerous cells at time `t`.
 
 - **Reaction (2)**: `C + E_0 \xrightarrow{k_2} E \xrightarrow{k_3} E_0 + D`
