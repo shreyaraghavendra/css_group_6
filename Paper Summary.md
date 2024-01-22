@@ -29,7 +29,7 @@ Represents the proliferation of cancerous cells at time `t`.
 $C + E_0 \xrightarrow{k_2} E \xrightarrow{k_3} E_0 + D$  
 The first part is a cytotoxic process where an effector cell `E_0` binds to a cancerous cell `C`, becoming an activated effector cell `E`.   The second part denotes the dissolution of the effector cell complex, resulting in the reversion of the effector cell to its original state `E_0` and a dead cell `D`. This sequence implies that the effector cell attacks the cancerous cell, which eventually dies.
 
-$D \xrightarrow{k_4} \text{normal}$  
+$D \xrightarrow{k_4} N$  
 Represents revertion of a dead cell to a normal cell.  
 
  
@@ -39,8 +39,6 @@ Represents revertion of a dead cell to a normal cell.
 | k2        | 0.2-0.4        | Activation rate of the immune response against the cancerous cell.                               |
 | k3        | 0.2-0.65       | Completion rate of the cytotoxic process where the cancer cell is destroyed.                     |
 | k4        | 0.1-0.4        | Rate of a cell's return to a non-cancerous state.                                                |
-
-
-
+ 
 
 ### Results
