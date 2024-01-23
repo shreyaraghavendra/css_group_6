@@ -9,8 +9,6 @@
 (c) Mechanical pressure inside the tumor  
 * Time delay in the model represents the time it takes for a cancer cell to undergo mitosis. This enables metastasis.  
 
-### Continuous Model
-
 ### Cellular Automaton Model
 
 #### Types of cells modelled:
@@ -39,6 +37,4 @@ Represents revertion of a dead cell to a normal cell.
 | k2        | 0.2-0.4        | Activation rate of the immune response against the cancerous cell.                               |
 | k3        | 0.2-0.65       | Completion rate of the cytotoxic process where the cancer cell is destroyed.                     |
 | k4        | 0.1-0.4        | Rate of a cell's return to a non-cancerous state.                                                |
- 
 
-### Results
