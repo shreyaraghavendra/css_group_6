@@ -32,10 +32,10 @@ def origin_distance(M, origin):
     R = R / n_prime if n_prime else 0
     return R
 
-def density_development(M):
+def density_development(M, origin):
     """ Calculate density development of tumor. """
     n_prime = calculate_n_prime(M)
-    R = origin_distance(M)
+    R = origin_distance(M, origin)
     return n_prime / R**2 if R else 0
 
 def mitosis_probability(k, n, p, time_delay, generation, history):
@@ -46,16 +46,16 @@ def mitosis_probability(k, n, p, time_delay, generation, history):
     else:
         return k * (1 - n / p)
 
-def store_history(generation, M, history):
+def store_history(generation, M, history, origin, RHO):
     """ Store the number of each cell type and R at the current generation. """
     Nc = sum_cell_type(M, 'C')
     Ne = sum_cell_type(M, 'E')
     Nd = sum_cell_type(M, 'D')
-    R = origin_distance(M)  # Calculate radius here
-    dense = (density_development(M) > RHO)
+    R = origin_distance(M, origin)  # Calculate radius here
+    dense = (density_development(M, origin) > RHO)
     history[generation] = {'Nc': Nc, 'Ne': Ne, 'Nd': Nd, 'R': R, "dense": dense}
 
-def get_quadrant(r, c):
+def get_quadrant(r, c, ORIGIN):
     """ Get quadrant of coordinates relative to origin. """
     if r <= ORIGIN[0] and c > ORIGIN[1]:
         return 'I'
@@ -66,10 +66,10 @@ def get_quadrant(r, c):
     else:
         return 'IV'
 
-def mitosis(M, newM, r, c, dense):
+def mitosis(M, newM, r, c, dense, ORIGIN):
     """ Model cell division with density development. """
     up, rt, dn, lt = (r-1, c), (r, c+1), (r+1, c), (r, c-1)
-    quadrant = get_quadrant(r, c)
+    quadrant = get_quadrant(r, c, ORIGIN)
     dense_map = {'I': [up, rt], 'II': [lt, up], 'III': [dn, lt], 'IV': [rt, dn]}
     not_dense_map = {'I': [dn, lt], 'II': [rt, dn], 'III': [up, rt], 'IV': [lt, up]} 
     not_normal = ('E', 'D')
@@ -84,7 +84,7 @@ def mitosis(M, newM, r, c, dense):
 
 def simulate_tumor_growth_one_step(M, generation, time_delay, history, phi, rho, k1, k2, k3, k4, origin, rows, cols):
     newM = np.copy(M)
-    store_history(generation, M, history, origin)
+    store_history(generation, M, history, origin, rho)
     dense = history[generation]['dense']
     
     for r in range(1, rows-1):
@@ -92,7 +92,7 @@ def simulate_tumor_growth_one_step(M, generation, time_delay, history, phi, rho,
             if M[r, c] == 'C':
                 mitosis_prob = mitosis_probability(k1, sum_cell_type(M, 'C'), phi, time_delay, generation, history)
                 if random.random() < mitosis_prob:
-                    newM = mitosis(M, newM, r, c, dense)
+                    newM = mitosis(M, newM, r, c, dense, origin)
                 elif random.random() < k2:
                     newM[r, c] = 'E'
             elif M[r, c] == 'E' and random.random() < k3:
