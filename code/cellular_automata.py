@@ -138,7 +138,7 @@ def simulate_tumor_growth(time_delay, generations, rows, cols, phi, rho, k1, k2,
 
 def simulate_tumor_growth_with_clusters(time_delay, generations, rows, cols, phi, rho, k1, k2, k3, k4, cancer_init_positions, origin):
     history = {}
-    M = ca.initialize_grid(rows, cols, cancer_init_positions)
+    M = initialize_grid(rows, cols, cancer_init_positions)
     M_cluster = []
 
     for g in range(generations):
