@@ -82,6 +82,28 @@ def mitosis(M, newM, r, c, dense, ORIGIN):
             break
     return newM
 
+def find_clusters(grid, ROWS,COLS):
+    visited = np.zeros_like(grid, dtype=bool)
+    clusters = []
+
+    for r in range(ROWS):
+        for c in range(COLS):
+            if grid[r, c] == 'C' and not visited[r, c]:
+                cluster = set()
+                stack = [(r, c)]
+
+                while stack:
+                    current_r, current_c = stack.pop()
+                    if 0 <= current_r < ROWS and 0 <= current_c < COLS and grid[current_r, current_c] == 'C' and not visited[current_r, current_c]:
+                        visited[current_r, current_c] = True
+                        cluster.add((current_r, current_c))
+                        stack.extend([(current_r + dr, current_c + dc) for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]])
+
+                if cluster:
+                    clusters.append(cluster)
+
+    return clusters
+
 def simulate_tumor_growth_one_step(M, generation, time_delay, history, phi, rho, k1, k2, k3, k4, origin, rows, cols):
     newM = np.copy(M)
     store_history(generation, M, history, origin, rho)
