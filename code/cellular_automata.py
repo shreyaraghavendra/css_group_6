@@ -108,6 +108,10 @@ def simulate_tumor_growth_one_step(M, generation, time_delay, history, phi, rho,
     newM = np.copy(M)
     store_history(generation, M, history, origin, rho)
     dense = history[generation]['dense']
+
+    delayed_gen = generation - time_delay
+    if delayed_gen in history:
+        dense = history[delayed_gen]['dense']
     
     for r in range(1, rows-1):
         for c in range(1, cols-1):
@@ -131,3 +135,12 @@ def simulate_tumor_growth(time_delay, generations, rows, cols, phi, rho, k1, k2,
         M = simulate_tumor_growth_one_step(M, g, time_delay, history, phi, rho, k1, k2, k3, k4, origin, rows, cols)
 
     return history
+
+# create delay array
+def delay_coordinates_reconstruction(time_series, tau, d):
+    n = len(time_series)
+    if n <= (d - 1) * tau:
+        raise ValueError("Time series is too short for given tau and d values")
+
+    reconstructed = np.array([time_series[i:n - (d - 1 - i) * tau:tau] for i in range(d)])
+    return reconstructed.T
