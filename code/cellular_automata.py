@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 import math
 import random
 
@@ -136,6 +138,18 @@ def simulate_tumor_growth(time_delay, generations, rows, cols, phi, rho, k1, k2,
 
     return history
 
+def simulate_tumor_growth_with_clusters(time_delay, generations, rows, cols, phi, rho, k1, k2, k3, k4, cancer_init_positions, origin):
+    history = {}
+    M = initialize_grid(rows, cols, cancer_init_positions)
+    M_cluster = []
+
+    for g in range(generations):
+        M = simulate_tumor_growth_one_step(M, g, time_delay, history, phi, rho, k1, k2, k3, k4, origin, rows, cols)
+
+        M_cluster.append(M)
+
+    return history, M_cluster
+
 # create delay array
 def delay_coordinates_reconstruction(time_series, tau, d):
     n = len(time_series)
@@ -144,3 +158,37 @@ def delay_coordinates_reconstruction(time_series, tau, d):
 
     reconstructed = np.array([time_series[i:n - (d - 1 - i) * tau:tau] for i in range(d)])
     return reconstructed.T
+
+
+# visualizing simulation functions
+def cell_type_to_number(cell_type):
+    return {'N': 0, 'C': 1, 'E': 2, 'D': 3}[cell_type]
+
+def convert_matrix(M):
+    numeric_M = np.vectorize(cell_type_to_number)(M)
+    return numeric_M
+
+def plot_simulate_tumor_growth(time_delay, generations, rows, cols, phi, rho, k1, k2, k3, k4, cancer_init_positions, origin):
+    history = {}
+    M = initialize_grid(rows, cols, cancer_init_positions)
+
+    plt.figure(figsize=(20, 8))
+    iteration_numbers = []
+    plot_count = 0
+
+    for g in range(generations):
+        iteration_numbers.append(g)
+        M = simulate_tumor_growth_one_step(M, g, time_delay, history, phi, rho, k1, k2, k3, k4, origin, rows, cols)
+        if g % 20 == 0:
+            plot_count += 1
+            plt.subplot(1, min(5, generations // 20), plot_count)
+            plt.imshow(convert_matrix(M), cmap=ListedColormap(['white', 'black', 'red', 'green']))
+            plt.title(f'Generation {g}')
+            plt.axis('off')
+
+            if plot_count == 5:
+                plt.show()
+                plt.figure(figsize=(20, 8))
+                plot_count = 0
+    plt.show()
+    return history
