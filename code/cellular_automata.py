@@ -245,7 +245,7 @@ def read_matrix(rows, cols, all_M, generation, matrices_csv_file = 'matrices_dat
         for row in reader:
             M = reconstruct_matrix(row, rows, cols)
             M_for_tau.append(M)
-            if len(M_for_tau) == GENERATIONS:
+            if len(M_for_tau) == generation:
                 all_M.append(M_for_tau.copy())
                 M_for_tau = []
 
