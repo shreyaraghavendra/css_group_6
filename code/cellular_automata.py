@@ -217,12 +217,14 @@ def read_history(history_array, history_csv_file = 'history_data.csv'):
     print(f"Importing completed, there are {len(history_array)} history entries in total")
     return history_array
 
-def read_matrix(all_M, generation, matrices_csv_file = 'matrices_data.csv'):
+def read_matrix(rows, cols, all_M, generation, matrices_csv_file = 'matrices_data.csv'):
     """
         #it is used in this way:
         matrices_csv_file = '../data/matrices_data.csv'
+        ROWS = 101
+        COLS = 101
         all_M = []
-        all_M = read_matrix(all_M, GENERATIONS, matrices_csv_file)
+        all_M = read_matrix(ROWS, COLS, all_M, GENERATIONS, matrices_csv_file)
         for tau in range(0, 100):
         for g in range(0, GENERATIONS):
             print(all_M[tau][g])
