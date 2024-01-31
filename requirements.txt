@@ -3,3 +3,4 @@ matplotlib
 math
 random
 jupyter 
+plotly
