@@ -1,5 +1,6 @@
 
-import cellular_automata as ca
+import code.ca_model as ca
+from code.analyze import *
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
@@ -10,18 +11,18 @@ import ipywidgets as widgets
 from matplotlib.widgets import Slider
 
 
-# %%
-def simulate_tumor_growth(time_delay, generations, rows, cols, phi, rho, k1, k2, k3, k4, cancer_init_positions, origin):
-    history = {}
-    M = ca.initialize_grid(rows, cols, cancer_init_positions)
-    M_cluster = []
+# # %%
+# def simulate_tumor_growth(time_delay, generations, rows, cols, phi, rho, k1, k2, k3, k4, cancer_init_positions, origin):
+#     history = {}
+#     M = ca.initialize_grid(rows, cols, cancer_init_positions)
+#     M_cluster = []
 
-    for g in range(generations):
-        M = ca.simulate_tumor_growth_one_step(M, g, time_delay, history, phi, rho, k1, k2, k3, k4, origin, rows, cols)
+#     for g in range(generations):
+#         M = ca.simulate_tumor_growth_one_step(M, g, time_delay, history, phi, rho, k1, k2, k3, k4, origin, rows, cols)
 
-        M_cluster.append(M)
+#         M_cluster.append(M)
 
-    return history, M_cluster
+#     return history, M_cluster
 
 # %%
 GENERATIONS = 500
@@ -56,10 +57,10 @@ for i, K1 in enumerate(K1_values):
         plt.subplots_adjust(bottom=0.25)  # Adjust the bottom margin to make room for the slider
         fig.suptitle(f'Grid Visualization of Cancer Cell Clusters for K1={K1}, tau={tau}')
 
-        history, Ms = simulate_tumor_growth(tau, GENERATIONS, ROWS, COLS, PHI, RHO, K1, K2, K3, K4, CANCER_INIT_POSITIONS, ORIGIN)
-
+        history, Ms = simulate_tumor_growth(tau, GENERATIONS, K1, K2)
+      
         # Initial grid
-        clusters = ca.find_clusters(Ms[initial_generation], ROWS, COLS)
+        clusters = find_clusters(Ms[initial_generation], ROWS, COLS)
         cluster_sizes = [len(cluster) for cluster in clusters]
         grid = np.zeros((ROWS, COLS))
 
@@ -78,7 +79,7 @@ for i, K1 in enumerate(K1_values):
 
         def update(val):
             generation = int(generation_slider.val) - 1
-            clusters = ca.find_clusters(Ms[generation], ROWS, COLS)
+            clusters = find_clusters(Ms[generation], ROWS, COLS)
             cluster_sizes = [len(cluster) for cluster in clusters]
 
             grid = np.zeros((ROWS, COLS))
