@@ -1,4 +1,4 @@
-from code.ca_model import *
+from ca_model import *
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 

@@ -1,6 +1,6 @@
 
-import code.ca_model as ca
-from code.analyze import *
+import ca_model as ca
+from analyze import *
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
@@ -57,7 +57,7 @@ for i, K1 in enumerate(K1_values):
         plt.subplots_adjust(bottom=0.25)  # Adjust the bottom margin to make room for the slider
         fig.suptitle(f'Grid Visualization of Cancer Cell Clusters for K1={K1}, tau={tau}')
 
-        history, Ms = simulate_tumor_growth(tau, GENERATIONS, K1, K2)
+        history, Ms = simulate_tumor_growth_with_clusters(tau, GENERATIONS, K1, K2)
       
         # Initial grid
         clusters = find_clusters(Ms[initial_generation], ROWS, COLS)
