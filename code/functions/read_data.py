@@ -25,7 +25,7 @@ def read_history(history_array, history_csv_file='history_data.csv'):
     return history_array
 
 
-def read_matrix(rows, cols, all_M, generation, matrices_csv_file='matrices_data.csv'):
+def read_matrix(rows, cols, generation, matrices_csv_file='matrices_data.csv'):
     """
     The function reads the matrices from the CSV file and stores them in the all_M array.
 
