@@ -18,17 +18,33 @@ RHO = 3.85  # Define a threshold for density development
 
 def initialize_grid():
     """Initialize the grid with normal cells and initial cancer cells."""
+
     M = np.full((ROWS, COLS), 'N')
     for pos in CANCER_INIT_POSITIONS:
         M[pos] = 'C'
     return M
 
 def sum_cell_type(M, cell_type):
-    """Count the number of a specific cell type in the grid."""
+    """
+    Count the number of a specific cell type in the grid.
+
+    Args:
+        - M: The grid of cells.
+        - cell_type: The type of cell to count.
+
+    Returns: The number of cells of the specified type.
+    """
     return np.sum(M == cell_type)
 
 def calculate_n_prime(M):
-    """Calculate the total number of cancerous, edge, and dead cells."""
+    """
+    Calculate the total number of cancerous, edge, and dead cells.
+    
+    Args:
+        - M: The grid of cells.
+
+    Returns: The total number of cells; C + E + D.
+    """
     c = sum_cell_type(M, 'C')
     e = sum_cell_type(M, 'E')
     d = sum_cell_type(M, 'D')
@@ -36,7 +52,14 @@ def calculate_n_prime(M):
     return n_prime
 
 def origin_distance(M):
-    """Calculate the average distance of cancer cells from the origin."""
+    """
+    Calculate the average distance of cancer cells from the origin.
+
+    Args:
+        - M: The grid of cells.
+
+    Returns: The distance of cancer cells from the origin.
+    """
     n_prime = calculate_n_prime(M)
     R = 0
     for i in range(len(M)):
@@ -47,23 +70,49 @@ def origin_distance(M):
     return R
 
 def density_development(M):
-    """Calculate the density development of the tumor."""
+    """
+    Calculate the density development of the tumor.
+
+    Args:
+        - M: The grid of cells.
+
+    Returns: The density development of the tumor.
+    """
     n_prime = calculate_n_prime(M)
     R = origin_distance(M)
     return n_prime / R ** 2 if R else 0
 
-def mitosis_probability(k, n, time_delay, generation, history):
-    """Calculate the probability of a cell undergoing mitosis."""
+def mitosis_probability(k1, n, time_delay, generation, history):
+    """
+    Calculate the probability of a cell undergoing mitosis.
+
+    Args:
+        - k1: Proliferation rate of cancer cells.
+        - n: The number of cancerous cells.
+        - time_delay: The time delay.
+        - generation: The current generation of the simulation.
+        - history: A record of the previous states of the simulation.
+
+    Returns: The probability of a cell undergoing mitosis.
+    """
     delayed_gen = generation - time_delay
     if delayed_gen in history:
         n_delayed = history[delayed_gen]['Nc']
-        return k * (1 - n_delayed / PHI)
+        return k1 * (1 - n_delayed / PHI)
     else:
-        return k * (1 - n / PHI)
+        return k1 * (1 - n / PHI)
 
 
 def store_history(generation, M, history):
-    """ Store the number of each cell type and R at the current generation. """
+    """ 
+    Store the number of each cell type and R at the current generation. 
+    
+    Args:
+        - generation: The current generation of the simulation.
+        - M: The grid of cells.
+        - history: A record of the previous states of the simulation.
+    
+    """
     Nc = sum_cell_type(M, 'C')
     Ne = sum_cell_type(M, 'E')
     Nd = sum_cell_type(M, 'D')
@@ -73,7 +122,15 @@ def store_history(generation, M, history):
 
 
 def get_quadrant(r, c):
-    """ Get quadrant of coordinates relative to ORIGIN. """
+    """
+    Get quadrant of coordinates relative to ORIGIN.
+    
+    Args:
+        - r: The row index of the cell.
+        - c: The column index of the cell.
+
+    Returns: The quadrant of the cell.
+    """
     if r <= ORIGIN[0] and c > ORIGIN[1]:
         return 'I'
     elif r <= ORIGIN[0] and c <= ORIGIN[1]:
@@ -89,14 +146,13 @@ def mitosis(M, newM, r, c, dense):
     Model the cell division process, considering the tumor density development.
 
     Args:
-    - M: The current state of the grid.
-    - newM: The grid for the next state.
-    - r: The row index of the dividing cell.
-    - c: The column index of the dividing cell.
-    - dense: A boolean indicating whether the tumor is dense or not.
+        - M: The current state of the grid.
+        - newM: The grid for the next state.
+        - r: The row index of the dividing cell.
+        - c: The column index of the dividing cell.
+        - dense: A boolean indicating whether the tumor is dense or not.
 
-    Returns:
-    - newM: The updated grid with the result of the division.
+    Returns: The updated grid, newM, with the result of the division.
     """
     # Define directions relative to the cell position
     up, rt, dn, lt = (r - 1, c), (r, c + 1), (r + 1, c), (r, c - 1)
@@ -128,15 +184,14 @@ def simulate_tumor_growth_one_step(M, generation, time_delay, history, k1, k2):
     Simulate a single step of tumor growth in the cellular automaton.
 
     Args:
-    - M: Current state of the grid.
-    - generation: Current generation of the simulation.
-    - time_delay: Time delay factor for mitosis probability calculation.
-    - history: A record of the previous states of the simulation.
-    - k1: Probability constant for normal cell mitosis.
-    - k2: Probability constant for cancerous cell mitosis.
+        - M: Current state of the grid.
+        - generation: Current generation of the simulation.
+        - time_delay: Time delay factor for mitosis probability calculation.
+        - history: A record of the previous states of the simulation.
+        - k1: Proliferation rate of cancer cells.
+        - k2: Inmune response rate against cancer cells.
 
-    Returns:
-    - newM: The grid after one step of simulation.
+    Returns: The grid, newM, after one step of simulation.
     """
     newM = np.copy(M)  # Create a copy of the grid for the new state
     store_history(generation, M, history)  # Store the current state in history
@@ -178,13 +233,12 @@ def simulate_tumor_growth(time_delay, generations, k1, k2):
     Simulate the growth of a tumor over multiple generations.
 
     Args:
-    - time_delay: Time delay factor for mitosis probability calculation.
-    - generations: Number of generations to simulate.
-    - k1: Probability constant for normal cell mitosis.
-    - k2: Probability constant for cancerous cell mitosis.
+        - time_delay: Time delay factor for mitosis probability calculation.
+        - generations: Number of generations to simulate.
+        - k1: Proliferation rate of cancer cells.
+        - k2: Inmune response rate against cancer cells.
 
-    Returns:
-    - history: A dictionary recording the state of the simulation at each generation.
+    Returns: A dictionary named history recording the state of the simulation at each generation.
     """
     history = {}  # Initialize history record
     M = initialize_grid()  # Initialize the grid
@@ -206,34 +260,34 @@ def simulate_tumor_growth_with_clusters(time_delay, generations, k1, k2):
     Simulate the tumor growth over a number of generations with cluster tracking.
 
     Args:
-    - time_delay: The delay in generations for mitosis to affect tumor density.
-    - generations: The total number of generations to simulate.
-    - k1: The mitosis probability constant for cancer cells.
-    - k2: The transition probability constant from cancerous to endothelial state.
+        - time_delay: The delay in generations for mitosis to affect tumor density.
+        - generations: The total number of generations to simulate.
+        - k1: Proliferation rate of cancer cells.
+        - k2: Inmune response rate against cancer cells.
 
-    Returns:
-    - Tuple of history (dict) of tumor growth and M_cluster (list) of numpy arrays representing tumor state at each generation.
+    Returns: Tuple of history (dict) of tumor growth and cancer_cell_grid (list) of numpy arrays representing tumor state at each generation.
     """
     # Initialize history dictionary and the grid
     history = {}
     M = initialize_grid()
     # List to store the grid state at each generation for clusters
-    M_cluster = []
+    cancer_cell_grid= []
+
 
     # Iterate over each generation to simulate tumor growth
     for g in range(generations):
         # Simulate one step of tumor growth
         M = simulate_tumor_growth_one_step(M, g, time_delay, history, k1, k2)
-        # Append the state of the grid to M_cluster
-        M_cluster.append(M)
+        # Append the state of the grid to cancer_cell_grid
+        cancer_cell_grid.append(M)
 
     # Assert statements to verify the correctness of the simulation's output
     assert isinstance(history, dict), "History must be a dictionary"
-    assert all(isinstance(M, np.ndarray) for M in M_cluster), "All elements in M_cluster must be numpy arrays"
-    assert len(M_cluster) == generations, "The length of M_cluster must be equal to the number of generations"
+    assert all(isinstance(M, np.ndarray) for M in cancer_cell_grid), "All elements in cancer_cell_grid must be numpy arrays"
+    assert len(cancer_cell_grid) == generations, "The length of cancer_cell_grid must be equal to the number of generations"
 
     # Additional assert statement to check if history contains expected keys
     expected_keys = {'Nc', 'Ne', 'Nd', 'R', 'dense'}
     assert all(key in history[0] for key in expected_keys), "History should contain expected keys for simulation data"
 
-    return history, M_cluster
+    return history, cancer_cell_grid

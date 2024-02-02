@@ -3,13 +3,13 @@ import csv
 
 def read_history(history_array, history_csv_file='history_data.csv'):
     """
-        #it is used in this way:
-        history_csv_file = '../data/history_data.csv'
-        history_array = []
-        history_array = read_history(history_array, history_csv_file)
-        for tau in range(0, 100):
-        for g in range(0, GENERATIONS):
-            print(history_array[tau][g])
+    The function reads the history data from the CSV file and stores it in the history_array.
+
+    Args:
+        - history_array: the array to store the history data.
+        - history_csv_file: the path to the CSV file.
+  
+    Returns: The array containing the history data.
     """
     # Read the CSV file and store the data in groups of 500 lines
     with open(history_csv_file, mode='r', encoding='utf-8') as file:
@@ -27,15 +27,16 @@ def read_history(history_array, history_csv_file='history_data.csv'):
 
 def read_matrix(rows, cols, all_M, generation, matrices_csv_file='matrices_data.csv'):
     """
-        #it is used in this way:
-        matrices_csv_file = '../data/matrices_data.csv'
-        ROWS = 101
-        COLS = 101
-        all_M = []
-        all_M = read_matrix(ROWS, COLS, all_M, GENERATIONS, matrices_csv_file)
-        for tau in range(0, 100):
-        for g in range(0, GENERATIONS):
-            print(all_M[tau][g])
+    The function reads the matrices from the CSV file and stores them in the all_M array.
+
+    Args:
+        - rows: the number of rows in the matrix.
+        - cols: the number of columns in the matrix.
+        - all_M: the array to store the matrices.
+        - generations: the number of generations.
+        - matrices_csv_file: the path to the CSV file.
+
+    Returns: The array containing the matrices.
     """
 
     def reconstruct_matrix(row, rows, cols):

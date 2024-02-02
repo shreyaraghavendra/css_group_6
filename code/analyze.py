@@ -4,12 +4,14 @@ from matplotlib.colors import ListedColormap
 
 def find_clusters(grid, ROWS, COLS):
     """
-    Find clusters of 'C' in the given grid.
+    Find clusters of 'C', cancer cells, in the given grid.
 
-    :param grid: A numpy array representing the grid
-    :param ROWS: Number of rows in the grid
-    :param COLS: Number of columns in the grid
-    :return: A list of sets, each set containing the coordinates of a cluster
+    Args:
+    - grid: A numpy array representing the grid.
+    - ROWS: Number of rows in the grid.
+    - COLS: Number of columns in the grid.
+
+    Returns: A list of sets, each set containing the coordinates of a cluster.
     """
     # Initialize a grid to keep track of visited cells
     visited = np.zeros_like(grid, dtype=bool)
@@ -46,10 +48,12 @@ def delay_coordinates_reconstruction(time_series, tau, d):
     """
     Reconstructs the delay coordinates from a time series.
 
-    :param time_series: The time series data
-    :param tau: The delay
-    :param d: The embedding dimension
-    :return: The reconstructed delay coordinates
+    Args:
+    - time_series: The time series data.
+    - tau: The time delay.
+    - d: The embedding dimension.
+
+    Returns: The reconstructed delay coordinates.
     """
     n = len(time_series)
     # Ensure the time series is long enough for the given tau and d
@@ -65,8 +69,10 @@ def cell_type_to_number(cell_type):
     """
     Converts a cell type character to a numeric value.
 
-    :param cell_type: The cell type character ('N', 'C', 'E', 'D')
-    :return: The numeric representation of the cell type
+    Args:
+    - Cell_type: The cell type character ('N', 'C', 'E', 'D').
+
+    Returns: The numeric representation of the cell type.
     """
     return {'N': 0, 'C': 1, 'E': 2, 'D': 3}[cell_type]
 
@@ -74,8 +80,10 @@ def convert_matrix(M):
     """
     Converts a matrix of cell type characters to a matrix of numeric values.
 
-    :param M: The matrix of cell type characters
-    :return: The matrix of numeric values
+    Args:
+    - M: The matrix of cell type characters.
+
+    Returns: The matrix of numeric values.
     """
     # Apply the cell_type_to_number conversion to the entire matrix
     numeric_M = np.vectorize(cell_type_to_number)(M)
@@ -86,11 +94,13 @@ def plot_simulate_tumor_growth(time_delay, generations, k1, k2):
     """
     Simulates tumor growth over a specified number of generations and plots the results every 20 generations.
 
-    :param time_delay: Time delay factor in the simulation.
-    :param generations: Total number of generations to simulate.
-    :param k1: Growth parameter.
-    :param k2: Growth parameter.
-    :return: A history dictionary containing the state of the grid at each step.
+    Args:
+    - time_delay: Time delay factor in the simulation.
+    - generations: Total number of generations to simulate.
+    - k1: Proliferation rate of cancer cells.
+    - k2: Inmune response rate against cancer cells.
+
+    Returns: A history dictionary containing the state of the grid at each step.
     """
     # Assert that the necessary parameters are of the correct type
     assert isinstance(generations, int), "Generations parameter must be an integer"
