@@ -16,13 +16,20 @@ CANCER_INIT_POSITIONS = [(ORIGIN[0], ORIGIN[1]), (ORIGIN[0] + 1, ORIGIN[1]),
 K3, K4 = 0.4, 0.4  # Define mitosis and apoptosis probabilities
 RHO = 3.85  # Define a threshold for density development
 
-def initialize_grid():
+def initialize_grid(ROWS=ROWS, COLS=COLS, CANCER_INIT_POSITIONS=CANCER_INIT_POSITIONS):
     """Initialize the grid with normal cells and initial cancer cells."""
-
     M = np.full((ROWS, COLS), 'N')
     for pos in CANCER_INIT_POSITIONS:
         M[pos] = 'C'
     return M
+
+# def initialize_grid():
+#     """Initialize the grid with normal cells and initial cancer cells."""
+
+#     M = np.full((ROWS, COLS), 'N')
+#     for pos in CANCER_INIT_POSITIONS:
+#         M[pos] = 'C'
+#     return M
 
 def sum_cell_type(M, cell_type):
     """
@@ -51,7 +58,7 @@ def calculate_n_prime(M):
     n_prime = c + e + d
     return n_prime
 
-def origin_distance(M):
+def origin_distance(M, ORIGIN=ORIGIN):
     """
     Calculate the average distance of cancer cells from the origin.
 
@@ -69,7 +76,7 @@ def origin_distance(M):
     R = R / n_prime if n_prime else 0
     return R
 
-def density_development(M):
+def density_development(M, ORIGIN=ORIGIN):
     """
     Calculate the density development of the tumor.
 
@@ -81,6 +88,10 @@ def density_development(M):
     n_prime = calculate_n_prime(M)
     R = origin_distance(M)
     return n_prime / R ** 2 if R else 0
+
+def basic_mitosis_probability(k, n):
+    """Calculate the probability of a cell undergoing mitosis."""
+    return k * (1 - n / PHI)
 
 def mitosis_probability(k1, n, time_delay, generation, history):
     """
@@ -226,6 +237,25 @@ def simulate_tumor_growth_one_step(M, generation, time_delay, history, k1, k2):
 # Sample assert statement to ensure function returns a numpy array
 assert isinstance(simulate_tumor_growth_one_step(np.full((ROWS, COLS), 'N'), 0, 1, {}, 0.1, 0.2),
                   np.ndarray), "Function must return a numpy array"
+
+def simulate_tumor_growth_one_step_metastasis(M, k1, k2, ROWS, COLS, ORIGIN):
+  
+    newM = np.copy(M)
+    dense = (density_development(M,ORIGIN) > RHO)
+
+    for r in range(1, ROWS - 1):
+        for c in range(1, COLS - 1):
+            if M[r, c] == 'C':
+                mitosis_prob = basic_mitosis_probability(k1, sum_cell_type(M, 'C'))
+                if random.random() < mitosis_prob:
+                    newM = mitosis(M, newM, r, c, dense)
+                elif random.random() < k2:
+                    newM[r, c] = 'E'
+            elif M[r, c] == 'E' and random.random() < K3:
+                newM[r, c] = 'D'
+            elif M[r, c] == 'D' and random.random() < K4:
+                newM[r, c] = 'N'
+    return newM
 
 
 def simulate_tumor_growth(time_delay, generations, k1, k2):

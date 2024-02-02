@@ -1,4 +1,4 @@
-from code.ca_model import *
+from functions.ca_model import *
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 
@@ -138,3 +138,25 @@ def plot_simulate_tumor_growth(time_delay, generations, k1, k2):
     plt.show()
 
     return history
+
+def simulate_and_find_metastasis(generations, rows, cols, k1, k2):
+
+    ORIGIN = (cols // 2, rows // 2)
+    CANCER_INIT_POSITIONS = [(ORIGIN[0], ORIGIN[1]), (ORIGIN[0] + 1, ORIGIN[1]),
+                            (ORIGIN[0] - 1, ORIGIN[1]), (ORIGIN[0], ORIGIN[1] - 1),
+                            (ORIGIN[0], ORIGIN[1] + 1)]
+
+    M = initialize_grid(rows, cols, CANCER_INIT_POSITIONS)
+    num_clusters_list = []
+    Tm = None
+
+    for g in range(generations):
+        M = simulate_tumor_growth_one_step_metastasis(M, k1, k2, rows, cols, ORIGIN)
+        clusters = find_clusters(M, rows, cols)
+        num_clusters = len(clusters)
+        num_clusters_list.append(len(clusters))
+        
+        if num_clusters > 50 and Tm is None:
+            Tm = g
+
+    return num_clusters_list, Tm
