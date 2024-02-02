@@ -1,7 +1,6 @@
 import numpy as np
 import random
 from functions import ca_model
-import matplotlib.pyplot as plt
 
 RANDOM_SEED = 42
 random.seed(RANDOM_SEED)
