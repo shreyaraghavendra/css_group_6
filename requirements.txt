@@ -4,3 +4,6 @@ math
 random
 jupyter 
 plotly
+pytest
+json
+csv
