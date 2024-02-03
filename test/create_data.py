@@ -2,7 +2,7 @@ import inspect
 import json
 import random
 import numpy
-from code.functions.ca_model import *  # Importing all from a custom model module
+from code.functions.ca_model import *
 import numpy as np
 
 # Setting a fixed seed for reproducibility
