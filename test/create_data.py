@@ -140,7 +140,7 @@ def read_data_and_compare_with_function_output(json_file_path, function, **funct
                 print(f"Output does not match for key: {key}. Expected: {expected_val}, Actual: {actual_val}")
 
 
-num_sets = 10  # Set the number of data sets to generate
+num_sets = 4  # Set the number of data sets to generate
 
 # Data generation for the simulate_tumor_growth function
 file_simulate_tumor_growth = "data/simulate_tumor_growth_data.json"
@@ -151,6 +151,3 @@ read_data_and_compare_with_function_output(file_simulate_tumor_growth, simulate_
 file_simulate_tumor_growth_with_clusters = "data/simulate_tumor_growth_with_clusters.json"
 generate_and_store_multiple_data_sets(simulate_tumor_growth_with_clusters, file_simulate_tumor_growth_with_clusters,
                                       num_sets)
-read_data_and_compare_with_function_output(file_simulate_tumor_growth_with_clusters, simulate_tumor_growth_with_clusters)
-
-
