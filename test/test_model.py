@@ -1,5 +1,6 @@
 import inspect
 import json
+import os
 import random
 import pytest
 import numpy as np
@@ -41,7 +42,9 @@ def test_simulate_tumor_growth_with_stored_data():
     """
     Tests the simulate_tumor_growth function with data stored in a JSON file.
     """
-    data_file_path = "data/simulate_tumor_growth_data.json"
+    data_file_path = "test/data/simulate_tumor_growth_data.json"
+    if not os.path.exists(data_file_path):
+        data_file_path = "data/simulate_tumor_growth_data.json"
     with open(data_file_path, 'r') as file:
         data = json.load(file)
 
@@ -67,7 +70,10 @@ def test_simulate_tumor_growth_with_clusters():
     """
     Tests the simulate_tumor_growth_with_clusters function with data stored in a JSON file.
     """
-    data_file_path = "data/simulate_tumor_growth_with_clusters.json"
+    data_file_path = "test/data/simulate_tumor_growth_with_clusters.json"
+    if not os.path.exists(data_file_path):
+        data_file_path = "data/simulate_tumor_growth_with_clusters.json"
+
     with open(data_file_path, 'r') as file:
         data = json.load(file)
 
