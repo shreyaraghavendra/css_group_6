@@ -43,9 +43,16 @@ pip install -r requirements.txt
 
 ### Executing program
 
-All analysis is done in Jupyter Notebooks which utilize functions from python files. 
+All analysis is done in Jupyter Notebooks which utilize functions from python files. The main code and modules are available in the folder `code/functions` as .py files. 
 
 Jupyter notebooks can be opened in JupyterLab or Visual Studio Code and executed by pressing `Run All`.
+
+### Testing and Development Details:
+
+* We have atleast 10% ‘assert’ statements inline
+* “pytest .” works and succeeds
+* Code is structured as a module with “__init__.py”
+* Functions documented in detail through docstrings
 
 
 ## Authors
